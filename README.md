@@ -1,16 +1,46 @@
-# se7ety
+🩺 تطبيق طبي – منصة ربط بين الأطباء والمرضى
 
-A new Flutter project.
+تطبيق Flutter متكامل يهدف لتسهيل التواصل بين المرضى والأطباء من خلال واجهة بسيطة وتجربة استخدام سلسة.
 
-## Getting Started
+🚀 المميزات
 
-This project is a starting point for a Flutter application.
+شاشة البداية (Splash Screen)
+شاشة ترحيبية أنيقة تعرض شعار التطبيق عند التشغيل.
 
-A few resources to get you started if this is your first Flutter project:
+شاشات الترحيب (Onboarding & Welcome)
+تقدم نبذة عن فكرة التطبيق وكيفية استخدامه.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+نظام التسجيل وتسجيل الدخول (Authentication)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+تسجيل الحسابات باستخدام Firebase Authentication
+
+حفظ بيانات المستخدمين في Cloud Firestore
+
+تخزين بيانات الدخول محليًا عبر Shared Preferences
+
+شاشات المريض
+
+عرض الملف الشخصي للمريض
+
+حجز واستعراض مواعيد الأطباء
+
+التواصل مع الطبيب
+
+إدارة الوصفات والمتابعة
+
+تعدد اللغات (Localization)
+دعم اللغة العربية والإنجليزية باستخدام مكتبة easy_localization
+
+🧩 التقنيات المستخدمة
+التقنية الاستخدام
+Flutter تطوير واجهات المستخدم
+Firebase Authentication تسجيل الدخول وإنشاء الحساب
+Cloud Firestore تخزين بيانات المستخدمين والأطباء
+Shared Preferences حفظ بيانات الجلسة محليًا
+easy_localization دعم اللغات المتعددة
+Dart اللغة الأساسية للتطبيق
+🎨 التصميم
+
+التطبيق يعتمد على تصميم هادئ واحترافي مخصص للتطبيقات الطبية.
+Font Family: Cairo
+Colors: الأبيض – الأزرق الطبي – الرمادي الفاتح
