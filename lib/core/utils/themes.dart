@@ -6,6 +6,7 @@ class Themes {
   static ThemeData get lightTheme {
     return ThemeData(
       appBarTheme: AppBarTheme(
+        surfaceTintColor: Colors.transparent,
         centerTitle: true,
         backgroundColor: AppColors.backgroundColor,
       ),
