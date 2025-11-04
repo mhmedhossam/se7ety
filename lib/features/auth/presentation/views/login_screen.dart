@@ -5,6 +5,7 @@ import 'package:se7ety/core/constants/app_images.dart';
 import 'package:se7ety/core/helper/regex.dart';
 import 'package:se7ety/core/routes/navigation.dart';
 import 'package:se7ety/core/routes/routes.dart';
+import 'package:se7ety/core/services/local/sharedpref.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/textstyles.dart';
 import 'package:se7ety/core/widgets/custom_text_field.dart';
@@ -28,14 +29,24 @@ class _LoginScreenState extends State<LoginScreen> {
   var passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    SharedPref.setOnBoardingShown();
     var cubit = context.read<AuthCubit>();
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(backgroundColor: AppColors.backgroundColor),
       body: BlocListener<AuthCubit, AuthStates>(
         listener: (context, state) {
           if (state is AuthSucceedState) {
             Navigation.pop(context);
-            Navigation.pushAndRemoveUntil(context, Routes.welcomeScreen);
+
+            if (cubit.completeRegister ?? true) {
+              Navigation.pushAndRemoveUntil(context, Routes.welcomeScreen);
+            } else {
+              Navigation.pushAndRemoveUntil(
+                context,
+                Routes.drCompleteRegisterScreen,
+                cubit.uid,
+              );
+            }
           } else if (state is AuthFailureState) {
             Navigation.pop(context);
             showMyDialog(context, state.message ?? "", DialogIconType.error);
@@ -89,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (pass == null || pass.isEmpty) {
                           return "please enter your password";
                         } else if (passRegex(pass)) {
-                          return " please enter stronge password";
+                          return " please enter stronge password include[uppercase ,lowercase letters and @#] ";
                         }
                         return null;
                       },
@@ -117,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     MainButton(
                       onPressed: () {
                         if (cubit.form.currentState!.validate()) {
-                          cubit.login();
+                          cubit.login(person: widget.person);
                         }
                       },
                       width: double.infinity,

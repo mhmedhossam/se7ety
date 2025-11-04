@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:se7ety/core/constants/app_images.dart';
 import 'package:se7ety/core/helper/regex.dart';
 import 'package:se7ety/core/routes/navigation.dart';
 import 'package:se7ety/core/routes/routes.dart';
+import 'package:se7ety/core/services/local/sharedpref.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/textstyles.dart';
 import 'package:se7ety/core/widgets/custom_text_field.dart';
@@ -32,12 +34,20 @@ class _LoginScreenState extends State<RegisterScreen> {
     var cubit = context.read<AuthCubit>();
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(backgroundColor: AppColors.backgroundColor),
       body: BlocListener<AuthCubit, AuthStates>(
         listener: (context, state) {
           if (state is AuthSucceedState) {
             Navigation.pop(context);
-            Navigation.pushAndRemoveUntil(context, Routes.welcomeScreen);
+            if (widget.person == UserTypeEnum.doctor) {
+              Navigation.pushAndRemoveUntil(
+                context,
+                Routes.drCompleteRegisterScreen,
+                cubit.uid,
+              );
+            } else {
+              Navigation.pushAndRemoveUntil(context, Routes.welcomeScreen);
+            }
           } else if (state is AuthFailureState) {
             Navigation.pop(context);
             showMyDialog(context, state.message ?? "", DialogIconType.error);
@@ -73,13 +83,12 @@ class _LoginScreenState extends State<RegisterScreen> {
                     CustomTextField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "please enter your name";
+                          return "قم بإدخال الاسم ";
                         }
                         return null;
                       },
-                      prefixIcon: Icon(Icons.email),
+                      prefixIcon: Icon(CupertinoIcons.person_fill),
                       hintText: "الاسم ",
-                      textAlign: TextAlign.right,
                       controller: cubit.nameController,
                     ),
                     Gap(20),
@@ -87,9 +96,9 @@ class _LoginScreenState extends State<RegisterScreen> {
                     CustomTextField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "please enter your email";
+                          return "قم بإدخال الايميل ";
                         } else if (regex(value)) {
-                          return "please enter a valid email";
+                          return "أدحل الايميل بشكل صحيح";
                         }
                         return null;
                       },
@@ -102,9 +111,9 @@ class _LoginScreenState extends State<RegisterScreen> {
                       obscureText: obscure,
                       validator: (pass) {
                         if (pass == null || pass.isEmpty) {
-                          return "please enter your password";
-                        } else if (!passRegex(pass)) {
-                          return " please enter stronge password";
+                          return "قم بإدخال الباسورد ";
+                        } else if (passRegex(pass)) {
+                          return " أدخل رقم سرى يحتوى على رموز وارقام ";
                         }
                         return null;
                       },

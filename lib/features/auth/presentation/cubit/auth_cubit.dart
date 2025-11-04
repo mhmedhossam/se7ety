@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,18 @@ class AuthCubit extends Cubit<AuthStates> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var nameController = TextEditingController();
+  var specializationController = TextEditingController();
+  var phone1Controller = TextEditingController();
+  var phone2Controller = TextEditingController();
+  var bioController = TextEditingController();
+  var openHourController = TextEditingController();
+  var closeHourController = TextEditingController();
+  var addressController = TextEditingController();
+  var imagePath;
+  bool? completeRegister;
   String? userName;
+  String? uid;
+
   Future<void> register({required UserTypeEnum person}) async {
     try {
       emit(AuthLoadingState());
@@ -24,6 +37,7 @@ class AuthCubit extends Cubit<AuthStates> {
           );
 
       User? user = credential.user;
+      uid = credential.user?.uid;
       user?.updateDisplayName(nameController.text ?? "");
       userName = user?.displayName;
 
@@ -33,6 +47,7 @@ class AuthCubit extends Cubit<AuthStates> {
           email: emailController.text,
           uid: user?.uid,
           rating: 3,
+          completeRegister: false,
         );
 
         FirebaseFirestore.instance
@@ -72,7 +87,7 @@ class AuthCubit extends Cubit<AuthStates> {
     }
   }
 
-  Future<void> login() async {
+  Future<void> login({required UserTypeEnum person}) async {
     emit(AuthLoadingState());
 
     try {
@@ -81,6 +96,18 @@ class AuthCubit extends Cubit<AuthStates> {
         password: passwordController.text,
       );
       userName = credential.user?.displayName;
+      uid = credential.user?.uid;
+
+      if (person == UserTypeEnum.doctor) {
+        DocumentSnapshot<Map<String, dynamic>> docUser = await FirebaseFirestore
+            .instance
+            .collection("doctor")
+            .doc(credential.user!.uid)
+            .get();
+        Map<String, dynamic>? doc = docUser.data();
+        completeRegister = doc?["complete_register"];
+      }
+
       emit(AuthSucceedState());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -94,6 +121,30 @@ class AuthCubit extends Cubit<AuthStates> {
       }
     } catch (e) {
       emit(AuthFailureState(message: "error please try again"));
+    }
+  }
+
+  Future<void> registerCompleteData({required String uid}) async {
+    emit(AuthLoadingState());
+    Doctor doctor = Doctor(
+      phone1: phone1Controller.text,
+      phone2: phone2Controller.text,
+      openHour: openHourController.text,
+      closeHour: closeHourController.text,
+      address: addressController.text,
+      bio: bioController.text,
+      specialization: specializationController.text,
+      completeRegister: true,
+      image: imagePath,
+    );
+    try {
+      await FirebaseFirestore.instance
+          .collection("doctor")
+          .doc(uid)
+          .update(doctor.toUpdateData());
+      emit(AuthSucceedState());
+    } on FirebaseFirestore catch (e) {
+      emit(AuthFailureState(message: e.toString()));
     }
   }
 }

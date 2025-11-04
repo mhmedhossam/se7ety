@@ -17,7 +17,9 @@ class CustomTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
 
   final bool readOnly;
-  final bool obscureText;
+  final bool? obscureText;
+  int? minLine;
+  int? maxLine;
   CustomTextField({
     this.textAlign = TextAlign.left,
     super.key,
@@ -33,6 +35,8 @@ class CustomTextField extends StatelessWidget {
     this.prefixIcon,
     this.obscureText = false,
     this.inputFormatters,
+    this.minLine,
+    this.maxLine = 1,
   });
 
   @override
@@ -46,14 +50,17 @@ class CustomTextField extends StatelessWidget {
       validator: validator,
       readOnly: readOnly,
       inputFormatters: inputFormatters,
-      obscureText: obscureText,
+      obscureText: obscureText ?? false,
       keyboardType: keyboardType,
+      minLines: minLine,
+      maxLines: maxLine,
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
+
         suffixIcon: suffixIcon,
         hint: Text(
           hintText,
-          textAlign: textAlign,
+          textAlign: TextAlign.start,
           style: TextStyles.body.copyWith(color: AppColors.greyColor),
         ),
       ),

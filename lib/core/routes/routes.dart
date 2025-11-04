@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:se7ety/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:se7ety/features/auth/presentation/views/dr_complete_register.dart';
 import 'package:se7ety/features/auth/presentation/views/login_screen.dart';
 import 'package:se7ety/features/auth/presentation/views/register_screen.dart';
 import 'package:se7ety/features/intro/onboarding/onboarding_screen.dart';
@@ -14,11 +15,22 @@ class Routes {
   static const String welcomeScreen = "/welcome-screen";
   static const String loginScreen = "/login-screen";
   static const String registerScreen = "/register-screen";
+  static const String drCompleteRegisterScreen = "/drCompleteRegister-screen";
 
   static final appRoutes = GoRouter(
     initialLocation: splashScreen,
     routes: [
       GoRoute(path: splashScreen, builder: (context, state) => SplashScreen()),
+      GoRoute(
+        path: drCompleteRegisterScreen,
+        builder: (context, state) {
+          String? uid = state.extra as String;
+          return BlocProvider(
+            create: (context) => AuthCubit(),
+            child: DrCompleteRegisterScreen(uid: uid),
+          );
+        },
+      ),
       GoRoute(
         path: loginScreen,
         builder: (context, state) {
