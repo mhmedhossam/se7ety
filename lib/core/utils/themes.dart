@@ -8,7 +8,7 @@ class Themes {
       appBarTheme: AppBarTheme(
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: AppColors.primaryColor,
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(foregroundColor: AppColors.darkColor),

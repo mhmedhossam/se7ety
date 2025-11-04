@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:se7ety/core/routes/navigation.dart';
 import 'package:se7ety/core/routes/routes.dart';
+import 'package:se7ety/core/services/local/sharedpref.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/textstyles.dart';
 import 'package:se7ety/core/widgets/main_button.dart';
@@ -28,6 +29,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           if (pageIndex != 2)
             TextButton(
               onPressed: () {
+                SharedPref.setOnBoardingShown();
+
                 Navigation.pushAndRemoveUntil(context, Routes.welcomeScreen);
               },
               child: Text(
@@ -110,6 +113,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         height: 50,
 
                         onPressed: () {
+                          SharedPref.setOnBoardingShown();
                           Navigation.pushAndRemoveUntil(
                             context,
                             Routes.welcomeScreen,
