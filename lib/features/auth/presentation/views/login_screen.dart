@@ -37,15 +37,19 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state is AuthSucceedState) {
             Navigation.pop(context);
-
-            if (cubit.completeRegister ?? true) {
-              Navigation.pushAndRemoveUntil(context, Routes.welcomeScreen);
+            if (cubit.userKind == "doctor" &&
+                widget.person == UserTypeEnum.doctor) {
+              if (cubit.completeRegister ?? true) {
+                Navigation.pushAndRemoveUntil(context, Routes.welcomeScreen);
+              } else {
+                Navigation.pushAndRemoveUntil(
+                  context,
+                  Routes.drCompleteRegisterScreen,
+                  cubit.uid,
+                );
+              }
             } else {
-              Navigation.pushAndRemoveUntil(
-                context,
-                Routes.drCompleteRegisterScreen,
-                cubit.uid,
-              );
+              Navigation.pushAndRemoveUntil(context, Routes.welcomeScreen);
             }
           } else if (state is AuthFailureState) {
             Navigation.pop(context);

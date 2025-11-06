@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloudinary_api/uploader/cloudinary_uploader.dart';
+import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +10,7 @@ import 'package:se7ety/features/auth/data/models/doctor.dart';
 import 'package:se7ety/features/auth/data/models/enum.dart';
 import 'package:se7ety/features/auth/data/models/patient.dart';
 import 'package:se7ety/features/auth/presentation/cubit/auth_states.dart';
+import 'package:cloudinary_api/src/request/model/uploader_params.dart';
 
 class AuthCubit extends Cubit<AuthStates> {
   AuthCubit() : super(AuthInitialState());
@@ -26,6 +29,8 @@ class AuthCubit extends Cubit<AuthStates> {
   bool? completeRegister;
   String? userName;
   String? uid;
+  String? userKind;
+  File? file;
 
   Future<void> register({required UserTypeEnum person}) async {
     try {
@@ -37,7 +42,7 @@ class AuthCubit extends Cubit<AuthStates> {
           );
 
       User? user = credential.user;
-      uid = credential.user?.uid;
+      uid = user?.uid;
       user?.updateDisplayName(nameController.text ?? "");
       userName = user?.displayName;
 
@@ -45,25 +50,27 @@ class AuthCubit extends Cubit<AuthStates> {
         var doctor = Doctor(
           name: nameController.text,
           email: emailController.text,
-          uid: user?.uid,
+          uid: uid,
           rating: 3,
-          completeRegister: false,
+          completeDataRegister: false,
+          userKind: "doctor",
         );
 
         FirebaseFirestore.instance
             .collection('doctor')
-            .doc(user?.uid)
+            .doc(uid)
             .set(doctor.toJson());
       } else {
         var patient = Patient(
           name: nameController.text,
           email: emailController.text,
-          uid: user?.uid,
+          uid: uid,
+          userKind: "patient",
         );
 
         FirebaseFirestore.instance
             .collection('patient')
-            .doc(user?.uid)
+            .doc(uid)
             .set(patient.toJson());
       }
 
@@ -102,10 +109,11 @@ class AuthCubit extends Cubit<AuthStates> {
         DocumentSnapshot<Map<String, dynamic>> docUser = await FirebaseFirestore
             .instance
             .collection("doctor")
-            .doc(credential.user!.uid)
+            .doc(uid)
             .get();
-        Map<String, dynamic>? doc = docUser.data();
-        completeRegister = doc?["complete_register"];
+        Map<String, dynamic>? userMap = docUser.data();
+        completeRegister = userMap?["complete_register"];
+        userKind = userMap?["user_kind"];
       }
 
       emit(AuthSucceedState());
@@ -124,23 +132,24 @@ class AuthCubit extends Cubit<AuthStates> {
     }
   }
 
-  Future<void> registerCompleteData({required String uid}) async {
+  Future<void> registerCompleteData() async {
     emit(AuthLoadingState());
     Doctor doctor = Doctor(
       phone1: phone1Controller.text,
       phone2: phone2Controller.text,
+      uid: FirebaseAuth.instance.currentUser?.uid,
       openHour: openHourController.text,
       closeHour: closeHourController.text,
       address: addressController.text,
       bio: bioController.text,
       specialization: specializationController.text,
-      completeRegister: true,
+      completeDataRegister: true,
       image: imagePath,
     );
     try {
       await FirebaseFirestore.instance
           .collection("doctor")
-          .doc(uid)
+          .doc(doctor.uid)
           .update(doctor.toUpdateData());
       emit(AuthSucceedState());
     } on FirebaseFirestore catch (e) {

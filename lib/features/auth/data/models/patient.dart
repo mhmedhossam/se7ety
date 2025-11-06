@@ -8,6 +8,7 @@ class Patient {
   int? gender;
   String? bio;
   String? city;
+  String? userKind;
 
   Patient({
     this.name,
@@ -19,6 +20,7 @@ class Patient {
     this.bio,
     this.city,
     this.gender,
+    this.userKind,
   });
 
   Patient.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class Patient {
     city = json['city'];
     gender = json['gender'];
     age = json['age'];
+    userKind = json['user_kind'];
   }
 
   Map<String, dynamic> toJson() {
@@ -44,6 +47,7 @@ class Patient {
       'city': city,
       'gender': gender,
       'age': age,
+      'user_kind': userKind,
     };
   }
 
@@ -57,6 +61,7 @@ class Patient {
     if (city != null) data['city'] = city;
     if (gender != null) data['gender'] = gender;
     if (age != null) data['age'] = age;
+    if (userKind != null) data['user_kind'] = userKind;
     return data;
   }
 }

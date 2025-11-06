@@ -11,7 +11,8 @@ class Doctor {
   String? closeHour;
   String? address;
   int? rating;
-  bool? completeRegister;
+  bool? completeDataRegister;
+  String? userKind;
 
   Doctor({
     this.address,
@@ -26,7 +27,8 @@ class Doctor {
     this.rating,
     this.specialization,
     this.uid,
-    this.completeRegister,
+    this.completeDataRegister,
+    this.userKind,
   });
 
   Doctor.fromJson(Map<String, dynamic> json) {
@@ -42,7 +44,8 @@ class Doctor {
     phone2 = json["phone2"];
     uid = json["uid"];
     specialization = json["specialization"];
-    completeRegister = json["complete_register"];
+    completeDataRegister = json["complete_register"];
+    userKind = json["user_kind"];
   }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{
@@ -58,7 +61,8 @@ class Doctor {
       "phone2": phone2,
       "uid": uid,
       "specialization": specialization,
-      "complete_register": completeRegister,
+      "complete_register": completeDataRegister,
+      "user_kind": userKind,
     };
     return data;
   }
@@ -76,8 +80,10 @@ class Doctor {
       if (phone2 != null) "phone2": phone2,
       if (uid != null) "uid": uid,
       if (address != null) "address": address,
-      if (completeRegister != null) "complete_register": completeRegister,
+      if (completeDataRegister != null)
+        "complete_register": completeDataRegister,
       if (specialization != null) "specialization": specialization,
+      if (userKind != null) "user_kind": userKind,
     };
     return data;
   }

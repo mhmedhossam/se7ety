@@ -5,13 +5,20 @@ import 'package:se7ety/core/routes/navigation.dart';
 import 'package:se7ety/core/routes/routes.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/textstyles.dart';
+import 'package:se7ety/core/widgets/main_button.dart';
 import 'package:se7ety/features/auth/data/models/enum.dart';
 
 import 'widgets/custom_button_container.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  UserTypeEnum? SelectedRow;
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.sizeOf(context);
@@ -41,6 +48,7 @@ class WelcomeScreen extends StatelessWidget {
                 Gap(10),
                 Text("سحل واحجز عند دكتورك وانت فالبيت "),
                 Spacer(),
+
                 Container(
                   width: double.infinity,
                   height: media.height * 0.3,
@@ -89,6 +97,29 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class chooseButton extends StatelessWidget {
+  final void Function() onTap;
+  bool isSelected;
+  chooseButton({super.key, required this.onTap, required this.isSelected});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 100,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.primaryColor : AppColors.fillColor,
+          border: Border.all(color: AppColors.darkColor),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Center(child: Text("دكتور ")),
       ),
     );
   }

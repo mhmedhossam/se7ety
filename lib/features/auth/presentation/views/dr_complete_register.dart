@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:se7ety/core/constants/app_images.dart';
+import 'package:se7ety/core/helper/upload_image.dart';
 import 'package:se7ety/core/routes/navigation.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/textstyles.dart';
@@ -28,6 +29,12 @@ class DrCompleteRegisterScreen extends StatefulWidget {
 }
 
 class _DrCompleteRegisterScreenState extends State<DrCompleteRegisterScreen> {
+  Future<String?> getImagePath(File? file) async {
+    String? path = await uploadImageToCloudinary(file!);
+    print(path);
+    return path;
+  }
+
   @override
   Widget build(BuildContext context) {
     var cubit = context.read<AuthCubit>();
@@ -82,23 +89,17 @@ class _DrCompleteRegisterScreenState extends State<DrCompleteRegisterScreen> {
                       child: DropdownButton<String>(
                         isExpanded: true,
                         borderRadius: BorderRadius.zero,
-                        hint: Text("التخصص"),
+                        hint: Text("ادخل التخصص"),
                         underline: SizedBox.shrink(),
-                        value: cubit.specializationController.text,
+                        value: cubit.specializationController.text.isEmpty
+                            ? null
+                            : cubit.specializationController.text,
                         items: List.generate(specializations.length, (i) {
                           return DropdownMenuItem<String>(
                             value: specializations[i],
                             child: Text(specializations[i]),
                           );
                         }),
-
-                        // [
-                        //   for (var specialization in specializations)
-                        //     DropdownMenuItem<String>(
-                        //       value: specialization,
-                        //       child: Text(specialization),
-                        //     ),
-                        // ],
                         onChanged: (value) {
                           setState(() {
                             if (value != null) {
@@ -271,9 +272,41 @@ class _DrCompleteRegisterScreenState extends State<DrCompleteRegisterScreen> {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 5, 16, 5),
         child: MainButton(
-          onPressed: () {
+          onPressed: () async {
             if (cubit.form.currentState!.validate()) {
-              cubit.registerCompleteData(uid: uid);
+              if (cubit.file != null &&
+                  cubit.specializationController.text.isNotEmpty) {
+                String? path = await uploadImageToCloudinary(cubit.file!);
+                cubit.imagePath = path;
+                cubit.registerCompleteData();
+              } else {
+                if (cubit.specializationController.text.isEmpty &&
+                    cubit.imagePath == null) {
+                  showMyDialog(
+                    context,
+                    " من فضلك قم بادخال التخصص والصورة ",
+                    DialogIconType.info,
+                  );
+                } else if (cubit.file == null) {
+                  showMyDialog(
+                    context,
+                    "من فضلك قم برفع الصورة ",
+                    DialogIconType.info,
+                  );
+                } else if (cubit.specializationController.text.isEmpty) {
+                  showMyDialog(
+                    context,
+                    "من فضلك أدخل التخصص ",
+                    DialogIconType.info,
+                  );
+                } else {
+                  showMyDialog(
+                    context,
+                    " من فضلك قم بادخال التخصص والصورة ",
+                    DialogIconType.info,
+                  );
+                }
+              }
             }
           },
           text: "التسجيل",
@@ -310,8 +343,9 @@ class _CustomCircleImageState extends State<CustomCircleImage> {
     if (pikedFile != null) {
       setState(() {
         imagePath = pikedFile.path;
-        widget.cubit.imagePath = imagePath;
+
         file = File(imagePath!);
+        widget.cubit.file = file;
       });
     }
   }
@@ -320,7 +354,7 @@ class _CustomCircleImageState extends State<CustomCircleImage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        _pickImage();
+        await _pickImage();
       },
       child: Stack(
         children: [
