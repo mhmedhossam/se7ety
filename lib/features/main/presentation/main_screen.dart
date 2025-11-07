@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -76,7 +77,13 @@ class _MainScreenState extends State<MainScreen> {
           ), // navigation bar padding
           tabs: [
             GButton(icon: Icons.home_filled, text: 'الرئيسية'),
-            GButton(icon: LineIcons.search, text: 'البحث'),
+            GButton(
+              icon: LineIcons.search,
+              text: 'البحث',
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+              },
+            ),
             GButton(icon: LineIcons.database, text: 'المواعيد'),
             GButton(icon: CupertinoIcons.person_fill, text: 'الحساب'),
           ],

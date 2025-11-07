@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigation.pop(context);
             if (cubit.userKind == "doctor" &&
                 widget.person == UserTypeEnum.doctor) {
-              if (cubit.completeRegister ?? true) {
+              if (cubit.completeRegister == true) {
                 Navigation.pushAndRemoveUntil(context, Routes.welcomeScreen);
               } else {
                 Navigation.pushAndRemoveUntil(

@@ -1,17 +1,12 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloudinary_api/uploader/cloudinary_uploader.dart';
-import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:se7ety/core/services/local/sharedpref.dart';
 import 'package:se7ety/features/auth/data/models/doctor.dart';
 import 'package:se7ety/features/auth/data/models/enum.dart';
 import 'package:se7ety/features/auth/data/models/patient.dart';
 import 'package:se7ety/features/auth/presentation/cubit/auth_states.dart';
-import 'package:cloudinary_api/src/request/model/uploader_params.dart';
 
 class AuthCubit extends Cubit<AuthStates> {
   AuthCubit() : super(AuthInitialState());
@@ -62,7 +57,6 @@ class AuthCubit extends Cubit<AuthStates> {
             .doc(uid)
             .set(doctor.toJson());
         //using updatePhotoUrl as a role
-        FirebaseAuth.instance.currentUser?.updatePhotoURL("doctor");
       } else {
         var patient = Patient(
           name: nameController.text,
@@ -82,20 +76,14 @@ class AuthCubit extends Cubit<AuthStates> {
       emit(AuthSucceedState());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        emit(AuthFailureState(message: "The password provided is too weak."));
+        emit(AuthFailureState(message: "الباسورد الذى ادخلته ضعيف"));
       } else if (e.code == 'email-already-in-use') {
-        emit(
-          AuthFailureState(
-            message: "The account already exists for that email.",
-          ),
-        );
+        emit(AuthFailureState(message: "هذا الاكونت موجود بالفعل "));
       } else {
-        emit(AuthFailureState(message: 'error please try again'));
+        emit(AuthFailureState(message: 'خطأ حاول مره أخرى '));
       }
     } catch (e) {
-      emit(
-        AuthFailureState(message: "somethings error please try again later"),
-      );
+      emit(AuthFailureState(message: "حدث شىء ما خطأ يرجى المحاوله مره اخرى "));
     }
   }
 
@@ -121,24 +109,44 @@ class AuthCubit extends Cubit<AuthStates> {
         userKind = userMap?["user_kind"];
 
         //using updatePhotoUrl as a role
-        FirebaseAuth.instance.currentUser?.updatePhotoURL("doctor");
-      } else {
-        //using updatePhotoUrl as a role
-        FirebaseAuth.instance.currentUser?.updatePhotoURL("patient");
+        if (userKind == "doctor") {
+          if (completeRegister == true) {
+            FirebaseAuth.instance.currentUser?.updatePhotoURL("doctor");
+          }
+          emit(AuthSucceedState());
+        } else {
+          await FirebaseAuth.instance.signOut();
+          emit(AuthFailureState(message: "هذا الاكونت مسجل كمريض"));
+        }
+      } else if (person == UserTypeEnum.patient) {
+        DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore
+            .instance
+            .collection("patient")
+            .doc(uid)
+            .get();
+        Map<String, dynamic>? userMap = userDoc.data();
+
+        userKind = userMap?["user_kind"];
+
+        if (userKind == "patient") {
+          //using updatePhotoUrl as a role
+          FirebaseAuth.instance.currentUser?.updatePhotoURL("patient");
+          emit(AuthSucceedState());
+        } else {
+          await FirebaseAuth.instance.signOut();
+          emit(AuthFailureState(message: "هذا الاكونت مسجل كادكتور "));
+        }
       }
-      emit(AuthSucceedState());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        emit(AuthFailureState(message: 'No user found for that email.'));
+        emit(AuthFailureState(message: 'هذا الايميل ليس مسجل '));
       } else if (e.code == 'wrong-password') {
-        emit(
-          AuthFailureState(message: 'Wrong password provided for that user.'),
-        );
+        emit(AuthFailureState(message: 'خطأ فى الباسورد '));
       } else {
-        emit(AuthFailureState(message: 'error please try again'));
+        emit(AuthFailureState(message: 'خطأ حاول مره أخرى '));
       }
     } catch (e) {
-      emit(AuthFailureState(message: "error please try again"));
+      emit(AuthFailureState(message: 'خطأ حاول مره أخرى '));
     }
   }
 
@@ -161,9 +169,11 @@ class AuthCubit extends Cubit<AuthStates> {
           .collection("doctor")
           .doc(doctor.uid)
           .update(doctor.toUpdateData());
+      FirebaseAuth.instance.currentUser?.updatePhotoURL("doctor");
+
       emit(AuthSucceedState());
     } on FirebaseFirestore catch (e) {
-      emit(AuthFailureState(message: e.toString()));
+      emit(AuthFailureState(message: "خطأ اعد أكمال البيانات مره اخرى"));
     }
   }
 }

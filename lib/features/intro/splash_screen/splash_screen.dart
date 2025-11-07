@@ -17,6 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Future.delayed(Duration(seconds: 5), () {
       var role = FirebaseAuth.instance.currentUser?.photoURL;
+
       Navigation.pushAndRemoveUntil(
         context,
 
@@ -24,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ? role == "patient"
                   ? Routes.mainScreen
                   : Routes
-                        .registerScreen // change to doctor screen
+                        .mainScreen // change to doctor screen
             : SharedPref.getOnBoardingShown
             ? Routes.welcomeScreen
             : Routes.onboardingScreen,
