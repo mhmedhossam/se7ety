@@ -8,6 +8,7 @@ import 'package:se7ety/features/intro/onboarding/onboarding_screen.dart';
 import 'package:se7ety/features/intro/splash_screen/splash_screen.dart';
 import 'package:se7ety/features/auth/data/models/enum.dart';
 import 'package:se7ety/features/intro/welcome/welcome_screen.dart';
+import 'package:se7ety/features/main/presentation/main_screen.dart';
 
 class Routes {
   static const String splashScreen = "/splash-screen";
@@ -15,19 +16,20 @@ class Routes {
   static const String welcomeScreen = "/welcome-screen";
   static const String loginScreen = "/login-screen";
   static const String registerScreen = "/register-screen";
+  static const String mainScreen = "/main-screen";
   static const String drCompleteRegisterScreen = "/drCompleteRegister-screen";
 
   static final appRoutes = GoRouter(
     initialLocation: splashScreen,
     routes: [
       GoRoute(path: splashScreen, builder: (context, state) => SplashScreen()),
+      GoRoute(path: mainScreen, builder: (context, state) => MainScreen()),
       GoRoute(
         path: drCompleteRegisterScreen,
         builder: (context, state) {
-          String? uid = state.extra as String;
           return BlocProvider(
             create: (context) => AuthCubit(),
-            child: DrCompleteRegisterScreen(uid: uid),
+            child: DrCompleteRegisterScreen(),
           );
         },
       ),

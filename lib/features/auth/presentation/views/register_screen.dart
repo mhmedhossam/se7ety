@@ -46,7 +46,7 @@ class _LoginScreenState extends State<RegisterScreen> {
                 cubit.uid,
               );
             } else {
-              Navigation.pushAndRemoveUntil(context, Routes.welcomeScreen);
+              Navigation.pushAndRemoveUntil(context, Routes.mainScreen);
             }
           } else if (state is AuthFailureState) {
             Navigation.pop(context);

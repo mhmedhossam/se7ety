@@ -6,6 +6,7 @@ import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:se7ety/core/services/local/sharedpref.dart';
 import 'package:se7ety/features/auth/data/models/doctor.dart';
 import 'package:se7ety/features/auth/data/models/enum.dart';
 import 'package:se7ety/features/auth/data/models/patient.dart';
@@ -60,6 +61,8 @@ class AuthCubit extends Cubit<AuthStates> {
             .collection('doctor')
             .doc(uid)
             .set(doctor.toJson());
+        //using updatePhotoUrl as a role
+        FirebaseAuth.instance.currentUser?.updatePhotoURL("doctor");
       } else {
         var patient = Patient(
           name: nameController.text,
@@ -72,6 +75,8 @@ class AuthCubit extends Cubit<AuthStates> {
             .collection('patient')
             .doc(uid)
             .set(patient.toJson());
+        //using updatePhotoUrl as a role
+        FirebaseAuth.instance.currentUser?.updatePhotoURL("patient");
       }
 
       emit(AuthSucceedState());
@@ -114,8 +119,13 @@ class AuthCubit extends Cubit<AuthStates> {
         Map<String, dynamic>? userMap = docUser.data();
         completeRegister = userMap?["complete_register"];
         userKind = userMap?["user_kind"];
-      }
 
+        //using updatePhotoUrl as a role
+        FirebaseAuth.instance.currentUser?.updatePhotoURL("doctor");
+      } else {
+        //using updatePhotoUrl as a role
+        FirebaseAuth.instance.currentUser?.updatePhotoURL("patient");
+      }
       emit(AuthSucceedState());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

@@ -20,8 +20,7 @@ import 'package:se7ety/features/auth/presentation/cubit/auth_states.dart';
 import '../widgets/custom_align_text.dart';
 
 class DrCompleteRegisterScreen extends StatefulWidget {
-  String uid;
-  DrCompleteRegisterScreen({super.key, required this.uid});
+  const DrCompleteRegisterScreen({super.key});
 
   @override
   State<DrCompleteRegisterScreen> createState() =>
@@ -41,7 +40,7 @@ class _DrCompleteRegisterScreenState extends State<DrCompleteRegisterScreen> {
     var media = MediaQuery.sizeOf(context);
 
     return Scaffold(
-      bottomNavigationBar: bottomNavigationBar(cubit: cubit, uid: widget.uid),
+      bottomNavigationBar: bottomNavigationBar(cubit: cubit),
       appBar: AppBar(
         title: Text(
           "إكمال عملية التسجيل ",
@@ -264,10 +263,7 @@ class _DrCompleteRegisterScreenState extends State<DrCompleteRegisterScreen> {
     );
   }
 
-  SafeArea bottomNavigationBar({
-    required AuthCubit cubit,
-    required String uid,
-  }) {
+  SafeArea bottomNavigationBar({required AuthCubit cubit}) {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 5, 16, 5),

@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPref {
   static late SharedPreferences pref;
   static const kToken = 'token';
+  static const kPatientUid = 'kPatientUid';
+  static const kDoctorId = 'kDoctorId';
   static const kUserData = 'kUserData';
   static const kOnBoardingShown = 'kOnBoardingShown';
 
