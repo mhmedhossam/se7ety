@@ -45,11 +45,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 Navigation.pushAndRemoveUntil(
                   context,
                   Routes.drCompleteRegisterScreen,
-                  cubit.uid,
                 );
               }
             } else {
-              Navigation.pushAndRemoveUntil(context, Routes.welcomeScreen);
+              Navigation.pushAndRemoveUntil(context, Routes.mainScreen);
             }
           } else if (state is AuthFailureState) {
             Navigation.pop(context);

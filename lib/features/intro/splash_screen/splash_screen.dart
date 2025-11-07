@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:se7ety/core/constants/app_images.dart';
 import 'package:se7ety/core/routes/navigation.dart';
@@ -15,9 +16,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Future.delayed(Duration(seconds: 5), () {
+      var role = FirebaseAuth.instance.currentUser?.photoURL;
       Navigation.pushAndRemoveUntil(
         context,
-        SharedPref.getOnBoardingShown
+
+        role != null
+            ? role == "patient"
+                  ? Routes.mainScreen
+                  : Routes
+                        .registerScreen // change to doctor screen
+            : SharedPref.getOnBoardingShown
             ? Routes.welcomeScreen
             : Routes.onboardingScreen,
       );
