@@ -14,13 +14,17 @@ class CustomTextField extends StatelessWidget {
   final Widget? prefixIcon;
   TextAlign textAlign;
   final void Function()? onTap;
+  final void Function(String)? onFieldSubmitted;
   final List<TextInputFormatter>? inputFormatters;
-
+  Color? cursorColor;
   final bool readOnly;
   final bool? obscureText;
+  void Function(PointerDownEvent)? onTapOutside;
   int? minLine;
   int? maxLine;
   CustomTextField({
+    this.onTapOutside,
+    this.onFieldSubmitted,
     this.textAlign = TextAlign.left,
     super.key,
     required this.hintText,
@@ -37,6 +41,7 @@ class CustomTextField extends StatelessWidget {
     this.inputFormatters,
     this.minLine,
     this.maxLine = 1,
+    this.cursorColor,
   });
 
   @override
@@ -44,14 +49,16 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       onTap: onTap,
       textInputAction: textInputAction,
-
+      cursorColor: cursorColor,
       controller: controller,
       onChanged: onChanged,
       validator: validator,
       readOnly: readOnly,
+      onTapOutside: onTapOutside,
       inputFormatters: inputFormatters,
       obscureText: obscureText ?? false,
       keyboardType: keyboardType,
+      onFieldSubmitted: onFieldSubmitted,
       minLines: minLine,
       maxLines: maxLine,
       decoration: InputDecoration(

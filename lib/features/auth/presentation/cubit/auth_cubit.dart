@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -134,15 +135,16 @@ class AuthCubit extends Cubit<AuthStates> {
           emit(AuthSucceedState());
         } else {
           await FirebaseAuth.instance.signOut();
-          emit(AuthFailureState(message: "هذا الاكونت مسجل كادكتور "));
+          emit(AuthFailureState(message: "هذا الاكونت مسجل ك دكتور "));
         }
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         emit(AuthFailureState(message: 'هذا الايميل ليس مسجل '));
-      } else if (e.code == 'wrong-password') {
-        emit(AuthFailureState(message: 'خطأ فى الباسورد '));
+      } else if (e.code == 'wrong-password' || e.code == 'invalid-credential') {
+        emit(AuthFailureState(message: 'خطأ فى الايميل أو  الباسورد '));
       } else {
+        log(e.toString());
         emit(AuthFailureState(message: 'خطأ حاول مره أخرى '));
       }
     } catch (e) {

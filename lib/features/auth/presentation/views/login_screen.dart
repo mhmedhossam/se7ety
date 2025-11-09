@@ -147,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text("ليس لديك حساب ؟ ", style: TextStyles.body),
-                        GestureDetector(
+                        InkWell(
                           onTap: () {
                             Navigation.pushReplacement(
                               context,

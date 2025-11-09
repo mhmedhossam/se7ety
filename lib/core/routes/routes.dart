@@ -8,7 +8,9 @@ import 'package:se7ety/features/intro/onboarding/onboarding_screen.dart';
 import 'package:se7ety/features/intro/splash_screen/splash_screen.dart';
 import 'package:se7ety/features/auth/data/models/enum.dart';
 import 'package:se7ety/features/intro/welcome/welcome_screen.dart';
-import 'package:se7ety/features/main/presentation/main_screen.dart';
+import 'package:se7ety/features/patient/home/presentation/view/search_result_screen.dart';
+import 'package:se7ety/features/patient/home/presentation/view/specialization_search_screen.dart';
+import 'package:se7ety/features/patient/main/main_screen.dart';
 
 class Routes {
   static const String splashScreen = "/splash-screen";
@@ -18,11 +20,24 @@ class Routes {
   static const String registerScreen = "/register-screen";
   static const String mainScreen = "/main-screen";
   static const String drCompleteRegisterScreen = "/drCompleteRegister-screen";
+  static const String searchResultScreen = "/SearchResult_screen";
+  static const String specializationSearchScreen =
+      "/specialization_search_screen";
 
   static final appRoutes = GoRouter(
     initialLocation: splashScreen,
     routes: [
       GoRoute(path: splashScreen, builder: (context, state) => SplashScreen()),
+      GoRoute(
+        path: searchResultScreen,
+        builder: (context, state) =>
+            SearchResultScreen(value: state.extra as String),
+      ),
+      GoRoute(
+        path: specializationSearchScreen,
+        builder: (context, state) =>
+            SpecializationSearchScreen(specialization: state.extra as String),
+      ),
       GoRoute(path: mainScreen, builder: (context, state) => MainScreen()),
       GoRoute(
         path: drCompleteRegisterScreen,

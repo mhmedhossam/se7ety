@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/app_fonts.dart';
+import 'package:se7ety/core/utils/textstyles.dart';
 
 class Themes {
   static ThemeData get lightTheme {
@@ -8,7 +9,11 @@ class Themes {
       appBarTheme: AppBarTheme(
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
+        titleTextStyle: TextStyles.title.copyWith(
+          fontFamily: AppFonts.cairoFamily,
+        ),
         backgroundColor: AppColors.primaryColor,
+        foregroundColor: AppColors.backgroundColor,
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(foregroundColor: AppColors.darkColor),

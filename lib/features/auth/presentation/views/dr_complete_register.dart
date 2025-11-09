@@ -41,12 +41,7 @@ class _DrCompleteRegisterScreenState extends State<DrCompleteRegisterScreen> {
 
     return Scaffold(
       bottomNavigationBar: bottomNavigationBar(cubit: cubit),
-      appBar: AppBar(
-        title: Text(
-          "إكمال عملية التسجيل ",
-          style: TextStyles.title.copyWith(color: AppColors.backgroundColor),
-        ),
-      ),
+      appBar: AppBar(title: Text("إكمال عملية التسجيل ")),
       body: BlocListener<AuthCubit, AuthStates>(
         listener: (context, state) {
           if (state is AuthSucceedState) {
@@ -348,7 +343,7 @@ class _CustomCircleImageState extends State<CustomCircleImage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () async {
         await _pickImage();
       },

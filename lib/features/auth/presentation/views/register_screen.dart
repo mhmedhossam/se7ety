@@ -153,7 +153,7 @@ class _LoginScreenState extends State<RegisterScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(" لديك حساب ؟ ", style: TextStyles.body),
-                        GestureDetector(
+                        InkWell(
                           onTap: () {
                             Navigation.pushReplacement(
                               context,

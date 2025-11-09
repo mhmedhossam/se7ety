@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
+import 'package:se7ety/features/patient/home/presentation/view/home_screen.dart';
+import 'package:se7ety/features/patient/search/presentation/view/search_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -19,12 +21,10 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     screens = [
-      Center(
-        child: Text(FirebaseAuth.instance.currentUser?.displayName ?? " "),
-      ),
-      Center(child: Text("screen2")),
+      HomeScreen(),
+      SearchScreen(),
       Center(child: Text("screen3")),
-      Center(child: Text("screen4")),
+      ProfileScreen(),
     ];
     super.initState();
   }
@@ -80,9 +80,9 @@ class _MainScreenState extends State<MainScreen> {
             GButton(
               icon: LineIcons.search,
               text: 'البحث',
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-              },
+              // onPressed: () async {
+              //   await FirebaseAuth.instance.signOut();
+              // },
             ),
             GButton(icon: LineIcons.database, text: 'المواعيد'),
             GButton(icon: CupertinoIcons.person_fill, text: 'الحساب'),

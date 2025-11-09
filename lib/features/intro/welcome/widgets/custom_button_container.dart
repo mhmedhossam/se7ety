@@ -15,7 +15,7 @@ class CustomButtonContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: GestureDetector(
+      child: InkWell(
         onTap: onTap,
         child: Container(
           margin: EdgeInsets.all(8),
