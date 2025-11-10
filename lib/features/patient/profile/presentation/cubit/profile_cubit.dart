@@ -1,0 +1,72 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:se7ety/core/helper/upload_image.dart';
+import 'package:se7ety/core/widgets/custom_text_field.dart';
+import 'package:se7ety/core/widgets/main_button.dart';
+import 'package:se7ety/features/auth/data/models/patient.dart';
+import 'package:se7ety/features/patient/profile/presentation/cubit/profile_states.dart';
+
+class ProfileCubit extends Cubit<ProfileStates> {
+  var form = GlobalKey<FormState>();
+  ProfileCubit() : super(ProfileInitialState());
+  var editController = TextEditingController();
+  Patient? patient;
+  String? uid = FirebaseAuth.instance.currentUser?.uid;
+  var patientCollection = FirebaseFirestore.instance.collection("patient");
+  Future<void> getProfileData() async {
+    emit(ProfileLoadingState());
+    if (isClosed) return;
+    try {
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+          .instance
+          .collection("patient")
+          .doc(uid)
+          .get();
+
+      patient = Patient.fromJson(snapshot.data()!);
+      if (isClosed) return;
+      emit(ProfileSucceedState());
+    } catch (e) {
+      emit(ProfileFailureState());
+    }
+  }
+
+  Future<void> pickImage() async {
+    try {
+      var pickImage = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+      );
+      if (isClosed) return;
+      emit(ImageUpLoadingState());
+
+      var imagePath = pickImage?.path;
+      File imageFile = File(imagePath!);
+      var url = uploadImageToCloudinary(imageFile);
+      patient?.imageUrl = await url;
+      patientCollection.doc(uid).update(patient!.toJsonUpdateData());
+      if (isClosed) return;
+      emit(ImageUpSucceedState());
+    } catch (e) {
+      emit(ImageUpFailureState());
+    }
+  }
+
+  editSetting() async {
+    try {
+      await patientCollection.doc(uid).update(patient!.toJsonUpdateData());
+      if (patient?.name != null) {
+        FirebaseAuth.instance.currentUser?.updateDisplayName(patient?.name);
+      }
+
+      emit(ProfileSucceedState());
+    } catch (e) {
+      emit(ProfileFailureState());
+    }
+  }
+}

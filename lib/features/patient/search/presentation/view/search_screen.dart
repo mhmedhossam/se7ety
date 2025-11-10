@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:se7ety/core/services/firebase_services/firebase_services.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/textstyles.dart';
@@ -53,7 +54,10 @@ class _SearchScreenState extends State<SearchScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (searchDoctor.text.isEmpty) {
-                    return NoSearchWidget(text: "قم بالبحث عن اسم الدكتور");
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+                      child: NoSearchWidget(text: "قم بالبحث عن اسم الدكتور"),
+                    );
                   } else {
                     return Expanded(
                       child: ListView.builder(
@@ -70,7 +74,12 @@ class _SearchScreenState extends State<SearchScreen> {
                     );
                   }
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(
+                    child: LottieBuilder.asset(
+                      "assets/images/loading.json",
+                      height: 50,
+                    ),
+                  );
                 }
               },
             ),

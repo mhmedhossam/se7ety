@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:se7ety/core/constants/app_images.dart';
 import 'package:se7ety/core/services/firebase_services/firebase_services.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
@@ -40,7 +41,12 @@ class SpecializationSearchScreen extends StatelessWidget {
               );
             }
           } else {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+              child: LottieBuilder.asset(
+                "assets/images/loading.json",
+                height: 100,
+              ),
+            );
           }
         },
       ),

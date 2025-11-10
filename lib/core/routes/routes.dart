@@ -11,9 +11,14 @@ import 'package:se7ety/features/intro/welcome/welcome_screen.dart';
 import 'package:se7ety/features/patient/home/presentation/view/search_result_screen.dart';
 import 'package:se7ety/features/patient/home/presentation/view/specialization_search_screen.dart';
 import 'package:se7ety/features/patient/main/main_screen.dart';
+import 'package:se7ety/features/patient/profile/presentation/cubit/profile_cubit.dart';
+import 'package:se7ety/features/patient/profile/presentation/views/account_setting_screen.dart';
+import 'package:se7ety/features/patient/profile/presentation/views/setting_screen.dart';
 
 class Routes {
   static const String splashScreen = "/splash-screen";
+  static const String settingScreen = "/setting-screen";
+  static const String accountSettingScreen = "/account_setting-screen";
   static const String onboardingScreen = "/onboarding-screen";
   static const String welcomeScreen = "/welcome-screen";
   static const String loginScreen = "/login-screen";
@@ -29,6 +34,12 @@ class Routes {
     routes: [
       GoRoute(path: splashScreen, builder: (context, state) => SplashScreen()),
       GoRoute(
+        path: settingScreen,
+        builder: (context, state) {
+          return SettingScreen(cubit: state.extra as ProfileCubit);
+        },
+      ),
+      GoRoute(
         path: searchResultScreen,
         builder: (context, state) =>
             SearchResultScreen(value: state.extra as String),
@@ -39,6 +50,13 @@ class Routes {
             SpecializationSearchScreen(specialization: state.extra as String),
       ),
       GoRoute(path: mainScreen, builder: (context, state) => MainScreen()),
+      GoRoute(
+        path: accountSettingScreen,
+        builder: (context, state) => BlocProvider.value(
+          value: state.extra as ProfileCubit,
+          child: AccountSettingScreen(),
+        ),
+      ),
       GoRoute(
         path: drCompleteRegisterScreen,
         builder: (context, state) {

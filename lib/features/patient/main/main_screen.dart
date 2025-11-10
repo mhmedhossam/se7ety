@@ -2,10 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/features/patient/home/presentation/view/home_screen.dart';
+import 'package:se7ety/features/patient/profile/presentation/cubit/profile_cubit.dart';
+import 'package:se7ety/features/patient/profile/presentation/views/profile_screen.dart';
 import 'package:se7ety/features/patient/search/presentation/view/search_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -24,7 +27,10 @@ class _MainScreenState extends State<MainScreen> {
       HomeScreen(),
       SearchScreen(),
       Center(child: Text("screen3")),
-      ProfileScreen(),
+      BlocProvider(
+        create: (context) => ProfileCubit()..getProfileData(),
+        child: ProfileScreen(),
+      ),
     ];
     super.initState();
   }
