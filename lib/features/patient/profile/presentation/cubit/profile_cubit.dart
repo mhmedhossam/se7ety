@@ -4,11 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:se7ety/core/helper/upload_image.dart';
-import 'package:se7ety/core/widgets/custom_text_field.dart';
-import 'package:se7ety/core/widgets/main_button.dart';
 import 'package:se7ety/features/auth/data/models/patient.dart';
 import 'package:se7ety/features/patient/profile/presentation/cubit/profile_states.dart';
 
