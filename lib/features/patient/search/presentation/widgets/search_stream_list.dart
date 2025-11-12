@@ -23,17 +23,17 @@ class SearchStreamList extends StatelessWidget {
               child: NoSearchWidget(text: "قم بالبحث عن اسم الدكتور"),
             );
           } else {
-            return Expanded(
-              child: ListView.builder(
-                itemCount: snapshot.data?.docs.length,
-                itemBuilder: (context, i) {
-                  return DoctorContainer(
-                    doctorModel: Doctor.fromJson(
-                      snapshot.data?.docs[i].data() as Map<String, dynamic>,
-                    ),
-                  );
-                },
-              ),
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: snapshot.data?.docs.length,
+              itemBuilder: (context, i) {
+                return DoctorContainer(
+                  doctorModel: Doctor.fromJson(
+                    snapshot.data?.docs[i].data() as Map<String, dynamic>,
+                  ),
+                );
+              },
             );
           }
         } else {
