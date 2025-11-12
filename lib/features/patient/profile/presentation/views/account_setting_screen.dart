@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -6,6 +7,7 @@ import 'package:se7ety/core/routes/navigation.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/textstyles.dart';
 import 'package:se7ety/core/widgets/custom_text_field.dart';
+import 'package:se7ety/core/widgets/loading.dart';
 import 'package:se7ety/core/widgets/main_button.dart';
 import 'package:se7ety/features/patient/profile/presentation/cubit/profile_cubit.dart';
 import 'package:se7ety/features/patient/profile/presentation/cubit/profile_states.dart';
@@ -24,93 +26,90 @@ class AccountSettingScreen extends StatelessWidget {
         builder: (context, state) {
           var cubit = context.read<ProfileCubit>();
           if (state is ProfileLoadingState) {
-            return Center(
-              child: LottieBuilder.asset(
-                "assets/images/loading.json",
-                height: 70,
-              ),
-            );
+            return Center(child: LoadingWidget());
           }
-          return Padding(
-            padding: EdgeInsets.all(8),
-            child: Column(
-              children: [
-                AccountSettingCard(
-                  onTap: () {
-                    editDialog(
-                      context: context,
-                      hintText: "أدخل الاسم الجديد ",
-                      cubit: cubit,
-                      onChanged: (value) {
-                        cubit.patient?.name = value;
-                      },
-                      title: "تعديل الاسم ",
-                    );
-                  },
-                  title: "الاسم",
-                  desc: cubit.patient?.name ?? "لم يتم ادخاله ",
-                ),
-                AccountSettingCard(
-                  onTap: () {
-                    editDialog(
-                      context: context,
-                      hintText: "رقم التلفون الجديد",
-                      cubit: cubit,
-                      onChanged: (value) {
-                        cubit.patient?.phone = value;
-                      },
-                      title: "تعديل رقم التلفون  ",
-                    );
-                  },
-                  title: "رقم التلفون",
-                  desc: cubit.patient?.phone ?? "لم يتم ادخاله ",
-                ),
-                AccountSettingCard(
-                  onTap: () {
-                    editDialog(
-                      context: context,
-                      hintText: "أدخل المدينة ",
-                      cubit: cubit,
-                      onChanged: (value) {
-                        cubit.patient?.city = value;
-                      },
-                      title: "تعديل المدينة ",
-                    );
-                  },
-                  title: "المدينة",
-                  desc: cubit.patient?.city ?? "لم يتم ادخاله ",
-                ),
-                AccountSettingCard(
-                  onTap: () {
-                    editDialog(
-                      context: context,
-                      hintText: "أدخل نبذه تعريفية عنك",
-                      cubit: cubit,
-                      onChanged: (value) {
-                        cubit.patient?.bio = value;
-                      },
-                      title: " نبذه تعريفية  ",
-                    );
-                  },
-                  title: "نبذة تعريفية",
-                  desc: cubit.patient?.bio ?? "لم يتم ادخاله ",
-                ),
-                AccountSettingCard(
-                  onTap: () {
-                    editDialog(
-                      context: context,
-                      hintText: "ادخل العمر",
-                      cubit: cubit,
-                      onChanged: (value) {
-                        cubit.patient?.age = value;
-                      },
-                      title: "تعديل العمر ",
-                    );
-                  },
-                  title: " العمر",
-                  desc: cubit.patient?.age ?? "لم يتم ادخاله ",
-                ),
-              ],
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                children: [
+                  AccountSettingCard(
+                    onTap: () {
+                      editDialog(
+                        context: context,
+                        hintText: "أدخل الاسم الجديد ",
+                        cubit: cubit,
+                        onChanged: (value) {
+                          cubit.patient?.name = value;
+                        },
+                        title: "تعديل الاسم ",
+                      );
+                    },
+                    title: "الاسم",
+                    desc: cubit.patient?.name ?? "لم يتم ادخاله ",
+                  ),
+                  AccountSettingCard(
+                    onTap: () {
+                      editDialog(
+                        context: context,
+                        hintText: "رقم التلفون الجديد",
+                        cubit: cubit,
+                        onChanged: (value) {
+                          cubit.patient?.phone = value;
+                        },
+                        title: "تعديل رقم التلفون  ",
+                      );
+                    },
+                    title: "رقم التلفون",
+                    desc: cubit.patient?.phone ?? "لم يتم ادخاله ",
+                  ),
+                  AccountSettingCard(
+                    onTap: () {
+                      editDialog(
+                        context: context,
+                        hintText: "أدخل المدينة ",
+                        cubit: cubit,
+                        onChanged: (value) {
+                          cubit.patient?.city = value;
+                        },
+                        title: "تعديل المدينة ",
+                      );
+                    },
+                    title: "المدينة",
+                    desc: cubit.patient?.city ?? "لم يتم ادخاله ",
+                  ),
+                  AccountSettingCard(
+                    onTap: () {
+                      editDialog(
+                        context: context,
+                        hintText: "أدخل نبذه تعريفية عنك",
+                        cubit: cubit,
+                        onChanged: (value) {
+                          cubit.patient?.bio = value;
+                        },
+                        title: " نبذه تعريفية  ",
+                      );
+                    },
+                    title: "نبذة تعريفية",
+                    desc: cubit.patient?.bio ?? "لم يتم ادخاله ",
+                  ),
+                  AccountSettingCard(
+                    onTap: () {
+                      editDialog(
+                        context: context,
+                        hintText: "ادخل العمر",
+                        cubit: cubit,
+                        onChanged: (value) {
+                          cubit.patient?.age = value;
+                        },
+                        title: "تعديل العمر ",
+                      );
+                    },
+                    title: " العمر",
+                    desc: cubit.patient?.age ?? "لم يتم ادخاله ",
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -175,6 +174,7 @@ class AccountSettingScreen extends StatelessWidget {
                       if (cubit.form.currentState!.validate()) {
                         cubit.editSetting();
                         Navigation.pop(context);
+                        cubit.editDisplayName(cubit.editController.text);
                         cubit.editController.clear();
                       }
                     },

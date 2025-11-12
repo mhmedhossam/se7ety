@@ -1,17 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:se7ety/core/routes/navigation.dart';
+import 'package:se7ety/core/routes/routes.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/textstyles.dart';
-import 'package:se7ety/features/patient/home/data/models/doctor_model.dart';
+import 'package:se7ety/features/auth/data/models/doctor.dart';
 
 class DoctorContainer extends StatelessWidget {
-  final DoctorModel doctorModel;
-  final void Function() onTap;
-  const DoctorContainer({
-    super.key,
-    required this.doctorModel,
-    required this.onTap,
-  });
+  final Doctor doctorModel;
+  const DoctorContainer({super.key, required this.doctorModel});
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +24,14 @@ class DoctorContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: ListTile(
-        onTap: onTap,
+        onTap: () {
+          Navigation.push(context, Routes.doctorDetailsScreen, doctorModel);
+        },
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
 
           children: [
-            Text("${doctorModel.rate ?? ""}"),
+            Text("${doctorModel.rating ?? ""}"),
             Icon(Icons.star, color: Colors.amber),
           ],
         ),
@@ -48,15 +48,19 @@ class DoctorContainer extends StatelessWidget {
 
             placeholder: (context, url) =>
                 Center(child: CircularProgressIndicator()),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, str, url) => Icon(
+              CupertinoIcons.person_alt_circle_fill,
+              color: AppColors.primaryColor,
+              size: 52,
+            ),
           ),
         ),
         title: Text(
-          doctorModel.title ?? "",
+          doctorModel.name ?? "",
           style: TextStyles.title.copyWith(color: AppColors.primaryColor),
         ),
 
-        subtitle: Text(doctorModel.subTitle ?? ""),
+        subtitle: Text(doctorModel.specialization ?? ""),
       ),
     );
   }

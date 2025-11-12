@@ -1,13 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:se7ety/features/auth/data/models/doctor.dart';
 import 'package:se7ety/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:se7ety/features/auth/presentation/views/dr_complete_register.dart';
 import 'package:se7ety/features/auth/presentation/views/login_screen.dart';
 import 'package:se7ety/features/auth/presentation/views/register_screen.dart';
+import 'package:se7ety/features/doctor/home/presentation/cubit/doctor_cubit.dart';
+import 'package:se7ety/features/doctor/home/presentation/view/doctor_home.dart';
+import 'package:se7ety/features/doctor/home/presentation/view/doctorprofile.dart';
 import 'package:se7ety/features/intro/onboarding/onboarding_screen.dart';
 import 'package:se7ety/features/intro/splash_screen/splash_screen.dart';
 import 'package:se7ety/features/auth/data/models/enum.dart';
 import 'package:se7ety/features/intro/welcome/welcome_screen.dart';
+import 'package:se7ety/features/patient/patient_appointment_doctor/presentation/view/booking.dart';
+import 'package:se7ety/features/patient/patient_appointment_doctor/presentation/view/doctor_details.dart';
 import 'package:se7ety/features/patient/home/presentation/view/search_result_screen.dart';
 import 'package:se7ety/features/patient/home/presentation/view/specialization_search_screen.dart';
 import 'package:se7ety/features/patient/main/main_screen.dart';
@@ -17,6 +23,8 @@ import 'package:se7ety/features/patient/profile/presentation/views/setting_scree
 
 class Routes {
   static const String splashScreen = "/splash-screen";
+  static const String doctorHomeScreen = "/doctor-home-screen";
+  static const String bookingScreen = "/booking-screen";
   static const String settingScreen = "/setting-screen";
   static const String accountSettingScreen = "/account_setting-screen";
   static const String onboardingScreen = "/onboarding-screen";
@@ -24,6 +32,8 @@ class Routes {
   static const String loginScreen = "/login-screen";
   static const String registerScreen = "/register-screen";
   static const String mainScreen = "/main-screen";
+  static const String doctorProfile = "/doctorProfile-screen";
+  static const String doctorDetailsScreen = "/doctor_details_screen";
   static const String drCompleteRegisterScreen = "/drCompleteRegister-screen";
   static const String searchResultScreen = "/SearchResult_screen";
   static const String specializationSearchScreen =
@@ -33,6 +43,32 @@ class Routes {
     initialLocation: splashScreen,
     routes: [
       GoRoute(path: splashScreen, builder: (context, state) => SplashScreen()),
+      GoRoute(
+        path: doctorProfile,
+        builder: (context, state) => BlocProvider.value(
+          value: state.extra as DoctorHomeCubit,
+          child: DoctorProfileScreen(),
+        ),
+      ),
+      GoRoute(
+        path: doctorHomeScreen,
+        builder: (context, state) => BlocProvider(
+          create: (context) => DoctorHomeCubit()
+            ..getMyAppointments()
+            ..getDoctorData(),
+          child: DoctorHome(),
+        ),
+      ),
+      GoRoute(
+        path: bookingScreen,
+        builder: (context, state) =>
+            BookingScreen(doctorModel: state.extra as Doctor),
+      ),
+      GoRoute(
+        path: doctorDetailsScreen,
+        builder: (context, state) =>
+            DoctorDetails(doctorModel: state.extra as Doctor),
+      ),
       GoRoute(
         path: settingScreen,
         builder: (context, state) {

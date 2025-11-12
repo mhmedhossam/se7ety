@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
+import 'package:se7ety/features/patient/appointment/presentation/cubit/appoint_cubit.dart';
+import 'package:se7ety/features/patient/appointment/presentation/view/appointment_screen.dart';
 import 'package:se7ety/features/patient/home/presentation/view/home_screen.dart';
 import 'package:se7ety/features/patient/profile/presentation/cubit/profile_cubit.dart';
 import 'package:se7ety/features/patient/profile/presentation/views/profile_screen.dart';
@@ -25,10 +27,15 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     screens = [
       HomeScreen(),
-      SearchScreen(),
-      Center(child: Text("screen3")),
+      const SearchScreen(),
       BlocProvider(
-        create: (context) => ProfileCubit()..getProfileData(),
+        create: (context) => AppointCubit()..getMyAppointments(),
+        child: AppointmentScreen(),
+      ),
+      BlocProvider(
+        create: (context) => ProfileCubit()
+          ..getProfileData()
+          ..getoldAppointment(),
         child: ProfileScreen(),
       ),
     ];

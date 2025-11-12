@@ -15,6 +15,7 @@ import 'package:se7ety/core/routes/routes.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/textstyles.dart';
 import 'package:se7ety/core/widgets/dialogs.dart';
+import 'package:se7ety/core/widgets/loading.dart';
 import 'package:se7ety/features/auth/presentation/widgets/custom_align_text.dart';
 import 'package:se7ety/features/patient/profile/presentation/cubit/profile_cubit.dart';
 import 'package:se7ety/features/patient/profile/presentation/cubit/profile_states.dart';
@@ -76,12 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (context, state) {
           var cubit = context.read<ProfileCubit>();
           if (state is ProfileLoadingState || state is ProfileLoadingState) {
-            return Center(
-              child: LottieBuilder.asset(
-                "assets/images/loading.json",
-                height: 50,
-              ),
-            );
+            return Center(child: LoadingWidget());
           } else if (state is ProfileFailureState) {
             return Center(child: Image.asset(AppImages.noScheduled));
           } else if (state is ProfileSucceedState ||
@@ -144,22 +140,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         Gap(30),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              cubit.patient?.name ?? "",
-                              style: TextStyles.title.copyWith(
-                                color: AppColors.primaryColor,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                cubit.patient?.name ?? "",
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyles.title.copyWith(
+                                  color: AppColors.primaryColor,
+                                ),
                               ),
-                            ),
-                            Gap(10),
-                            Text(
-                              cubit.patient?.city ?? "لم تضاف",
-                              style: TextStyles.body,
-                            ),
-                          ],
+                              Gap(10),
+                              Text(
+                                cubit.patient?.city ?? "لم تضاف",
+                                style: TextStyles.body,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -221,10 +221,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     Gap(10),
-                    CustomAlignText(
-                      text: "لا يوجد حجوزات سابقه ",
-                      alignment: Alignment.center,
-                    ),
+                    cubit.appointmentList.isNotEmpty
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, i) {
+                              return Container(
+                                padding: EdgeInsets.all(10),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: AppColors.fillColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "اسم الدكتور:  ${cubit.appointmentList[i].docName ?? ""}",
+                                          style: TextStyles.body,
+                                        ),
+                                        Text(
+                                          "التاريخ:  ${cubit.appointmentList[i].date ?? ""}",
+                                          style: TextStyles.body,
+                                        ),
+                                        Text(
+                                          "الوقت:  ${cubit.appointmentList[i].time ?? ""}",
+                                          style: TextStyles.body,
+                                        ),
+                                        Text(
+                                          "وصف الحاله:  ${cubit.appointmentList[i].patientDesc ?? ""}",
+                                          style: TextStyles.body,
+                                        ),
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      "مكتمل ",
+                                      style: TextStyles.body.copyWith(
+                                        color: AppColors.lightGreen,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            itemCount: cubit.appointmentList.length,
+                          )
+                        : CustomAlignText(
+                            text: "لا يوجد حجوزات سابقه ",
+                            alignment: Alignment.center,
+                          ),
                   ],
                 ),
               ),

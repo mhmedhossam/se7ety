@@ -24,8 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
         role != null
             ? role == "patient"
                   ? Routes.mainScreen
-                  : Routes
-                        .mainScreen // change to doctor screen
+                  : Routes.doctorHomeScreen
             : SharedPref.getOnBoardingShown
             ? Routes.welcomeScreen
             : Routes.onboardingScreen,

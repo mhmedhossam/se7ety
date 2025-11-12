@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:se7ety/core/services/firebase_services/firebase_services.dart';
-import 'package:se7ety/features/patient/home/data/models/doctor_model.dart';
+import 'package:se7ety/features/auth/data/models/doctor.dart';
 import 'package:se7ety/features/patient/home/presentation/widgets/doctor_container.dart';
 
 class ListViewTopRateBuilder extends StatelessWidget {
@@ -19,11 +18,11 @@ class ListViewTopRateBuilder extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             itemCount: snapshot.data?.docs.length,
             itemBuilder: (context, i) {
-              DoctorModel doctorModel = DoctorModel.fromJson(
-                snapshot.data?.docs[i].data(),
+              Doctor doctorModel = Doctor.fromJson(
+                snapshot.data?.docs[i].data() as Map<String, dynamic>,
               );
-              if (doctorModel.subTitle != null) {
-                return DoctorContainer(doctorModel: doctorModel, onTap: () {});
+              if (doctorModel.specialization != null) {
+                return DoctorContainer(doctorModel: doctorModel);
               }
               return null;
             },

@@ -24,8 +24,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     var media = MediaQuery.sizeOf(context);
     return Scaffold(
       body: Container(
+        width: double.infinity,
+
         decoration: BoxDecoration(
           image: DecorationImage(
+            fit: BoxFit.cover,
             image: AssetImage(AppImages.welcome),
             opacity: 0.6,
           ),
@@ -46,7 +49,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ),
                 ),
                 Gap(10),
-                Text("سحل واحجز عند دكتورك وانت فالبيت "),
+                Text("سجل واحجز عند دكتورك وانت فالبيت "),
                 Spacer(),
 
                 Container(

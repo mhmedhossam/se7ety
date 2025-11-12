@@ -4,10 +4,10 @@ import 'package:cupertino_calendar_picker/cupertino_calendar_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:se7ety/core/constants/app_images.dart';
+import 'package:intl/intl.dart';
 import 'package:se7ety/core/helper/upload_image.dart';
 import 'package:se7ety/core/routes/navigation.dart';
+import 'package:se7ety/core/routes/routes.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/textstyles.dart';
 import 'package:se7ety/core/widgets/custom_text_field.dart';
@@ -17,7 +17,9 @@ import 'package:se7ety/features/auth/data/models/specializations.dart';
 import 'package:se7ety/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:se7ety/features/auth/presentation/cubit/auth_states.dart';
 
+import '../../../../core/helper/convert_time.dart';
 import '../widgets/custom_align_text.dart';
+import '../widgets/custom_circle_image.dart';
 
 class DrCompleteRegisterScreen extends StatefulWidget {
   const DrCompleteRegisterScreen({super.key});
@@ -46,6 +48,8 @@ class _DrCompleteRegisterScreenState extends State<DrCompleteRegisterScreen> {
         listener: (context, state) {
           if (state is AuthSucceedState) {
             Navigation.pop(context);
+            Navigation.pushAndRemoveUntil(context, Routes.doctorHomeScreen);
+            showMyDialog(context, "تم التسجيل بنجاح", DialogIconType.success);
           } else if (state is AuthLoadingState) {
             showLoadingDialog(context);
           } else if (state is AuthFailureState) {
@@ -175,17 +179,18 @@ class _DrCompleteRegisterScreenState extends State<DrCompleteRegisterScreen> {
                             controller: cubit.openHourController,
                             readOnly: true,
                             suffixIcon: Icon(Icons.watch_later_outlined),
-                            hintText: "PM 10:00",
+                            hintText: " 10:00",
                             onTap: () {
                               showCupertinoTimePicker(
                                 context,
                                 widgetRenderBox: null,
                                 horizontalSpacing: media.width * 0.2,
                                 offset: Offset(0, media.height * 0.2),
-                                use24hFormat: false,
+                                use24hFormat: true,
                                 onTimeChanged: (time) {
-                                  cubit.openHourController.text =
-                                      "${time.hourOfPeriod}:${time.minute} ${time.period == DayPeriod.am ? "am" : "pm"}";
+                                  cubit.openHourController.text = DateFormat(
+                                    'HH:mm',
+                                  ).format(convertTime(time));
                                 },
                               );
                             },
@@ -210,8 +215,9 @@ class _DrCompleteRegisterScreenState extends State<DrCompleteRegisterScreen> {
                                 context,
                                 widgetRenderBox: null,
                                 onTimeChanged: (time) {
-                                  cubit.closeHourController.text =
-                                      "${time.hourOfPeriod}:${time.minute} ${time.period == DayPeriod.am ? "am" : "pm"}";
+                                  cubit.closeHourController.text = DateFormat(
+                                    "hh:mm a",
+                                  ).format(convertTime(time));
                                 },
                               );
                             },
@@ -304,70 +310,6 @@ class _DrCompleteRegisterScreenState extends State<DrCompleteRegisterScreen> {
           bgColor: AppColors.primaryColor,
           textColor: AppColors.backgroundColor,
         ),
-      ),
-    );
-  }
-}
-
-class CustomCircleImage extends StatefulWidget {
-  const CustomCircleImage({
-    super.key,
-    required this.media,
-    required this.cubit,
-  });
-
-  final Size media;
-  final AuthCubit cubit;
-  @override
-  State<CustomCircleImage> createState() => _CustomCircleImageState();
-}
-
-class _CustomCircleImageState extends State<CustomCircleImage> {
-  String? imagePath;
-  File? file;
-
-  Future<void> _pickImage() async {
-    final pikedFile = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-    );
-
-    if (pikedFile != null) {
-      setState(() {
-        imagePath = pikedFile.path;
-
-        file = File(imagePath!);
-        widget.cubit.file = file;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () async {
-        await _pickImage();
-      },
-      child: Stack(
-        children: [
-          CircleAvatar(
-            maxRadius: 50,
-            minRadius: 50,
-            backgroundColor: AppColors.backgroundColor,
-            backgroundImage: imagePath != null
-                ? FileImage(file!)
-                : AssetImage(AppImages.doc),
-          ),
-          PositionedDirectional(
-            end: widget.media.width * 0.17,
-            bottom: 0,
-            child: CircleAvatar(
-              backgroundColor: AppColors.backgroundColor,
-              minRadius: 15,
-              maxRadius: 20,
-              child: Icon(Icons.camera_alt, size: 20),
-            ),
-          ),
-        ],
       ),
     );
   }

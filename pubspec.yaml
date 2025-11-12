@@ -26,11 +26,13 @@ dependencies:
   go_router: ^16.3.0
   google_nav_bar: ^5.0.7
   image_picker: ^1.2.0
+  intl: ^0.20.2
   line_icons: ^2.0.3
   lottie: ^3.3.1
   shared_preferences: ^2.5.3
   smooth_page_indicator: ^1.2.1
   time_picker_spinner: ^1.0.2
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_lints: ^5.0.0

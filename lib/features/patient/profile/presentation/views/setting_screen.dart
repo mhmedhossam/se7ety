@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -57,7 +58,10 @@ class SettingScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: MainButton(
-                onPressed: () {},
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                  Navigation.pushAndRemoveUntil(context, Routes.welcomeScreen);
+                },
                 text: "تسجيل الخروج",
                 bgColor: AppColors.redAccent,
                 textColor: AppColors.backgroundColor,

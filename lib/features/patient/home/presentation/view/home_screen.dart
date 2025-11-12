@@ -25,6 +25,7 @@ class HomeScreen extends StatelessWidget {
           style: TextStyles.title.copyWith(
             fontWeight: FontWeight.w600,
             fontSize: 20,
+            color: AppColors.darkColor,
           ),
         ),
         actions: [
@@ -50,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       TextSpan(text: "مرحبا, "),
                       TextSpan(
-                        text: FirebaseServices.displayName,
+                        text: FirebaseServices().displayName,
                         style: TextStyles.title.copyWith(
                           color: AppColors.primaryColor,
                         ),

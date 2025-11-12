@@ -21,7 +21,12 @@ showLoadingDialog(BuildContext context) {
   );
 }
 
-showMyDialog(BuildContext context, String message, DialogIconType messageType) {
+showMyDialog(
+  BuildContext context,
+  String message,
+  DialogIconType messageType, [
+  void Function()? onPressed,
+]) {
   showDialog(
     barrierDismissible: false,
     context: context,
@@ -53,9 +58,11 @@ showMyDialog(BuildContext context, String message, DialogIconType messageType) {
             ),
             Gap(30),
             MainButton(
-              onPressed: () {
-                Navigation.pop(context);
-              },
+              onPressed:
+                  onPressed ??
+                  () {
+                    Navigation.pop(context);
+                  },
               text: "Close",
               width: 150,
               height: 40,

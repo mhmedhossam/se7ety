@@ -113,7 +113,7 @@ class _LoginScreenState extends State<RegisterScreen> {
                         if (pass == null || pass.isEmpty) {
                           return "قم بإدخال الباسورد ";
                         } else if (passRegex(pass)) {
-                          return " أدخل رقم سرى يحتوى على رموز وارقام ";
+                          return " يجب ان يحتوى على رموز وارقام وحروف كابيتال";
                         }
                         return null;
                       },

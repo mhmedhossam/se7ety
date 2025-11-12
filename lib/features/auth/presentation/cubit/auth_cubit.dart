@@ -48,7 +48,7 @@ class AuthCubit extends Cubit<AuthStates> {
           name: nameController.text,
           email: emailController.text,
           uid: uid,
-          rating: 3,
+          rating: 5,
           completeDataRegister: false,
           userKind: "doctor",
         );
@@ -153,7 +153,6 @@ class AuthCubit extends Cubit<AuthStates> {
   }
 
   Future<void> registerCompleteData() async {
-    emit(AuthLoadingState());
     Doctor doctor = Doctor(
       phone1: phone1Controller.text,
       phone2: phone2Controller.text,
@@ -167,6 +166,7 @@ class AuthCubit extends Cubit<AuthStates> {
       image: imagePath,
     );
     try {
+      emit(AuthLoadingState());
       await FirebaseFirestore.instance
           .collection("doctor")
           .doc(doctor.uid)
