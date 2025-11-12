@@ -20,6 +20,7 @@ class AppointCubit extends Cubit<AppointStates> {
       QuerySnapshot<Map<String, dynamic>> snapshot =
           await appointmentsCollection
               .where("patient-id", isEqualTo: uid)
+              .where("is-complete", isEqualTo: false)
               .get();
 
       List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = snapshot.docs;

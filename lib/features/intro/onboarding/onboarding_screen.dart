@@ -25,6 +25,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColors.backgroundColor,
         actions: [
           if (pageIndex != 2)
             TextButton(
