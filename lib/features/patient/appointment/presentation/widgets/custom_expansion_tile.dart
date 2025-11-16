@@ -28,14 +28,6 @@ class CustomExpansionTile extends StatelessWidget {
           ).toString().split(' ')[0];
     }
 
-    print(
-      DateTime(
-        DateTime.now().year,
-        DateTime.now().month,
-        DateTime.now().day,
-      ).toString().split(' ')[0],
-    );
-    print("DateTime.now().toIso8601Strin");
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Container(
@@ -117,9 +109,13 @@ class CustomTextIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(icon, color: AppColors.primaryColor),
-        Text(title),
+        SizedBox(
+          width: 200,
+          child: Text(title, maxLines: 2, overflow: TextOverflow.ellipsis),
+        ),
       ],
     );
   }

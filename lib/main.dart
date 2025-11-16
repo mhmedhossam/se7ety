@@ -1,7 +1,6 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:se7ety/core/routes/routes.dart';
 import 'package:se7ety/core/services/local/sharedpref.dart';
@@ -15,7 +14,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
+      enabled: false,
 
       builder: (context) => EasyLocalization(
         supportedLocales: [Locale('ar')],

@@ -43,6 +43,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
     emit(ProfileLoadingState());
     if (isClosed) return;
     QuerySnapshot<Map<String, dynamic>> snapshot = await appointmentCollection
+        .where("patient-id", isEqualTo: uid)
         .where("is-complete", isEqualTo: true)
         .get();
 

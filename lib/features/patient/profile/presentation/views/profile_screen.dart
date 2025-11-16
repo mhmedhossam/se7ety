@@ -234,30 +234,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "اسم الدكتور:  ${cubit.appointmentList[i].docName ?? ""}",
-                                          style: TextStyles.body,
-                                        ),
-                                        Text(
-                                          "التاريخ:  ${cubit.appointmentList[i].date ?? ""}",
-                                          style: TextStyles.body,
-                                        ),
-                                        Text(
-                                          "الوقت:  ${cubit.appointmentList[i].time ?? ""}",
-                                          style: TextStyles.body,
-                                        ),
-                                        Text(
-                                          "وصف الحاله:  ${cubit.appointmentList[i].patientDesc ?? ""}",
-                                          style: TextStyles.body,
-                                        ),
-                                      ],
+                                    Flexible(
+                                      flex: 3,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "اسم الدكتور:  ${cubit.appointmentList[i].docName ?? ""}",
+                                            style: TextStyles.body,
+                                          ),
+                                          Text(
+                                            "التاريخ:  ${cubit.appointmentList[i].date ?? ""}",
+                                            style: TextStyles.body,
+                                          ),
+                                          Text(
+                                            "الوقت:  ${cubit.appointmentList[i].time ?? ""}",
+                                            style: TextStyles.body,
+                                          ),
+                                          Text(
+                                            "وصف الحاله:  ${cubit.appointmentList[i].patientDesc ?? ""}",
+                                            style: TextStyles.body,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Spacer(),
+
                                     Text(
                                       "مكتمل ",
                                       style: TextStyles.body.copyWith(

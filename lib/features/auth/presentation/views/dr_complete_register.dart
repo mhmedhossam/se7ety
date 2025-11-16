@@ -186,7 +186,7 @@ class _DrCompleteRegisterScreenState extends State<DrCompleteRegisterScreen> {
                                 widgetRenderBox: null,
                                 horizontalSpacing: media.width * 0.2,
                                 offset: Offset(0, media.height * 0.2),
-                                use24hFormat: true,
+                                use24hFormat: false,
                                 onTimeChanged: (time) {
                                   cubit.openHourController.text = DateFormat(
                                     'HH:mm',
@@ -216,14 +216,14 @@ class _DrCompleteRegisterScreenState extends State<DrCompleteRegisterScreen> {
                                 widgetRenderBox: null,
                                 onTimeChanged: (time) {
                                   cubit.closeHourController.text = DateFormat(
-                                    "hh:mm a",
+                                    "HH:mm",
                                   ).format(convertTime(time));
                                 },
                               );
                             },
                             readOnly: true,
                             suffixIcon: Icon(Icons.watch_later_outlined),
-                            hintText: "PM 10:00",
+                            hintText: "10:00",
                             controller: cubit.closeHourController,
                           ),
                         ),

@@ -29,7 +29,13 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications_active)),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.notifications_active,
+              color: AppColors.primaryColor,
+            ),
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -100,10 +106,12 @@ class HomeScreen extends StatelessWidget {
                         Routes.searchResultScreen,
                         value,
                       );
+                      searchController.clear();
                     }
                   },
                   onTapOutside: (_) {
                     FocusScope.of(context).unfocus();
+                    searchController.clear();
                   },
                   suffixIcon: Container(
                     decoration: BoxDecoration(
@@ -118,6 +126,7 @@ class HomeScreen extends StatelessWidget {
                             Routes.searchResultScreen,
                             searchController.text,
                           );
+                          searchController.clear();
                         }
                       },
                       icon: Icon(
