@@ -5,12 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:se7ety/core/routes/routes.dart';
 import 'package:se7ety/core/services/local/sharedpref.dart';
 import 'package:se7ety/core/utils/themes.dart';
+import 'package:se7ety/environment_config.dart';
 import 'package:se7ety/firebase_options.dart';
 
-void main() async {
+void mainCommon(EnvironmentConfig environmentConfig) async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await SharedPref.initSharedPref();
+  //here you can use return stage firebase id  when you run staging app
+  // getFireBaseId(environmentConfig);
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
     DevicePreview(
