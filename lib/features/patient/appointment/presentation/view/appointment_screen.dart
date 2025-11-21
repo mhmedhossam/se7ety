@@ -14,7 +14,7 @@ class AppointmentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = context.read<AppointCubit>();
-    String j = "شارع الجامعه تقاطع حلمى وعلاء";
+    
     return Scaffold(
       appBar: AppBar(title: Text("مواعيد الحجز ")),
       body: BlocBuilder<AppointCubit, AppointStates>(

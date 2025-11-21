@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:se7ety/core/routes/navigation.dart';
 import 'package:se7ety/core/routes/routes.dart';
-import 'package:se7ety/core/services/payment/paymob/paymob.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/widgets/main_button.dart';
 import 'package:se7ety/features/patient/profile/presentation/cubit/profile_cubit.dart';
@@ -32,9 +31,7 @@ class SettingScreen extends StatelessWidget {
                 title: "إعدادات الحساب",
               ),
               SettingListTile(
-                onTap: () async {
-                  await Paymob.payWithPaymob("pk", "fd");
-                },
+                onTap: () async {},
                 leadingIcon: Icons.security,
                 title: "كلمة السر",
               ),

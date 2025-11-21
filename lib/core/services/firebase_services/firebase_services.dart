@@ -48,6 +48,7 @@ class FirebaseServices {
   static setAppointment(Map<String, dynamic> data, BuildContext context) async {
     try {
       showLoadingDialog(context);
+
       var res = appointmentCollection.doc();
       data['id'] = res.id;
       res.set(data).then((_) {
