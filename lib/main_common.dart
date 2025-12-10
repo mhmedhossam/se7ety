@@ -17,16 +17,17 @@ void mainCommon(EnvironmentConfig environmentConfig) async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
-    DevicePreview(
-      enabled: false,
+    // DevicePreview(
+    //   enabled: false,
 
-      builder: (context) => EasyLocalization(
-        supportedLocales: [Locale('ar')],
-        path: "assets/translations",
-        fallbackLocale: Locale('ar'),
-        child: const Se7ety(),
-      ),
+    // builder: (context) =>
+    EasyLocalization(
+      supportedLocales: [Locale('ar'), Locale('en')],
+      path: "assets/translations",
+      fallbackLocale: Locale('ar'),
+      child: const Se7ety(),
     ),
+    // ),
   );
 }
 
@@ -38,10 +39,11 @@ class Se7ety extends StatelessWidget {
     return MaterialApp.router(
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
-      locale: DevicePreview.isEnabled(context)
-          ? DevicePreview.locale(context)
-          : context.locale,
-      builder: DevicePreview.appBuilder,
+      locale:
+          // DevicePreview.isEnabled(context)
+          // ? DevicePreview.locale(context) :
+          context.locale,
+      // builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
       routerConfig: Routes.appRoutes,
       theme: Themes.lightTheme,

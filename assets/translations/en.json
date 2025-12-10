@@ -1,1 +1,9 @@
-{}
+{
+"welcome" : "Welcome ",
+"language" : "العربية",
+"sign and book" : "Sign and Book your Doctor when you are at Home"
+,"sign as" : "Sign As",
+"doctor" : "Doctor", 
+"patient" : "Patient"
+
+}
