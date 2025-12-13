@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:se7ety/core/utils/app_colors.dart';
+import 'package:se7ety/core/helper/extentions.dart';
 import 'package:se7ety/core/utils/textstyles.dart';
 
 class CustomButtonContainer extends StatelessWidget {
@@ -22,7 +22,7 @@ class CustomButtonContainer extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
-            color: AppColors.fillColor.withValues(alpha: 0.8),
+            color: context.theme.cardColor,
           ),
 
           child: Center(child: Text(title, style: TextStyles.title)),

@@ -2,12 +2,16 @@ import 'dart:ui' as ui;
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:se7ety/core/constants/app_images.dart';
+import 'package:se7ety/core/helper/extentions.dart';
+import 'package:se7ety/core/presentation/cubit/theme_cubit/theme_cubit.dart';
 import 'package:se7ety/core/routes/navigation.dart';
 import 'package:se7ety/core/routes/routes.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/textstyles.dart';
+import 'package:se7ety/core/utils/themes.dart';
 import 'package:se7ety/core/widgets/main_button.dart';
 import 'package:se7ety/features/auth/data/models/enum.dart';
 import 'package:flutter/widgets.dart';
@@ -41,29 +45,56 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ),
           Positioned(
             left: 20,
-            top: media.height * 0.07,
-            child: GestureDetector(
-              onTap: () {
-                var currentLocal = context.locale;
-                var newLocal = currentLocal.languageCode == 'en' ? 'ar' : 'en';
-                context.setLocale(Locale(newLocal));
-              },
-              child: Container(
-                width: 100,
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: AppColors.darkColor),
-                  color: AppColors.backgroundColor,
+            top: media.height * 0.05,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    var currentLocal = context.locale;
+                    var newLocal = context.isArabic ? 'en' : 'ar';
+                    context.setLocale(Locale(newLocal));
+                  },
+                  child: Container(
+                    width: 100,
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: AppColors.darkColor),
+                      color: context.theme.cardColor,
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.language, color: AppColors.primaryColor),
+                        Gap(5),
+                        Text("lang".tr()),
+                      ],
+                    ),
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    Icon(Icons.language, color: AppColors.primaryColor),
-                    Gap(5),
-                    Text("language".tr()),
-                  ],
+                Gap(10),
+                GestureDetector(
+                  onTap: () {
+                    context.themeCubit.changeTheme();
+                  },
+                  child: Container(
+                    width: 100,
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: AppColors.darkColor),
+                      color: context.theme.cardColor,
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.dark_mode, color: AppColors.primaryColor),
+                        Gap(5),
+                        Text("theme".tr()),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
           SafeArea(
@@ -103,7 +134,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           Text(
                             "sign as".tr(),
                             style: TextStyles.subHeadline.copyWith(
-                              color: AppColors.backgroundColor,
                               fontWeight: FontWeight.normal,
                             ),
                           ),
