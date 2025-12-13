@@ -4,9 +4,13 @@
 "profile": "الملف الشخصي",
 "settings": "الاعدادات",
 "logout": "تسجيل الخروج",
-"language" : "English",
+"lang" : "English",
 "sign and book" : "سجل واحجز عند دكتورك وانت فالبيت",
 "sign as" : "سجل دلوقتى كا",
 "doctor" : "دكتور", 
 "patient" : "مريض"
 }
+
+
+
+
