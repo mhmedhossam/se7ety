@@ -6,6 +6,7 @@ class SharedPref {
   static const kPatientUid = 'kPatientUid';
   static const kDoctorId = 'kDoctorId';
   static const kUserData = 'kUserData';
+  static const kIsDark = 'kIsDark';
   static const kOnBoardingShown = 'kOnBoardingShown';
 
   static initSharedPref() async {
@@ -18,6 +19,14 @@ class SharedPref {
 
   static bool get getOnBoardingShown {
     return pref.getBool(kOnBoardingShown) ?? false;
+  }
+
+  static setTheme(bool isDark) {
+    pref.setBool(kIsDark, isDark);
+  }
+
+  static bool get isDark {
+    return pref.getBool(kIsDark) ?? false;
   }
 
   static setData(String key, dynamic data) {
