@@ -1,3 +1,4 @@
+
 {
   "project_info": {
     "project_number": "951949788293",
@@ -9,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:951949788293:android:ca6ab1c59d6637c2dd95ec",
         "android_client_info": {
-          "package_name": "com.mh.se7ety"
+          "package_name": "com.mh.se7ety"  
         }
       },
       "oauth_client": [],

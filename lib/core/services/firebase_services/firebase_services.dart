@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:se7ety/core/routes/navigation.dart';
 import 'package:se7ety/core/routes/routes.dart';
 import 'package:se7ety/core/widgets/dialogs.dart';
-import 'package:se7ety/features/auth/data/models/patient.dart';
 
 class FirebaseServices {
   static CollectionReference doctorCollection = FirebaseFirestore.instance
